@@ -1,5 +1,6 @@
 'use server';
 
+import { auth } from "@/auth.config";
 import { paths } from "@/config/paths";
 import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
@@ -16,24 +17,28 @@ interface IInset {
     pesoKg?: number | undefined
     pesoLibras?: number | undefined
     totalPrecio?: number | undefined
+
 }
 
 export const createProduct = async (values: IInset) => {
     try {
 
+        const session = await auth();
+
         const newProducto = await prisma.product.create({
             data: {
-                categoryId: Number(values.categoryId) ?? 0,
+                categoryId: values.categoryId ?? '',
                 cantidad: values.cantidad ?? 0,
                 descripcionEn: values.descripcionEn ?? '',
                 descripcionEs: values.descripcionEs ?? '',
                 origen: values.origen ?? '',
-                stateId: Number(values.stateId) ?? 0,
+                stateId: values.stateId ?? '',
                 marca: values.marca ?? '',
                 precioTm: values.precioTm ?? 0,
                 pesoKg: values.pesoKg ?? 0,
                 pesoLibras: values.pesoLibras ?? 0,
                 totalPrecio: values.totalPrecio ?? 0,
+                userId: session?.user?.id ?? ''
             }
         });
 
@@ -53,7 +58,7 @@ export const createProduct = async (values: IInset) => {
 }
 
 interface IUpdate {
-    id: number;
+    id: string;
     categoryId?: string | undefined;
     cantidad?: number | undefined;
     descripcionEn?: string | undefined;
@@ -93,12 +98,12 @@ export const UpdateProduct = async (value: IUpdate) => {
         const updatedPersona = await prisma.product.update({
             where: { id },
             data: {
-                categoryId: Number(categoryId) ?? 0,
+                categoryId: categoryId ?? '',
                 cantidad: cantidad ?? 0,
                 descripcionEn: descripcionEn ?? '',
                 descripcionEs: descripcionEs ?? '',
                 origen: origen ?? '',
-                stateId: Number(stateId) ?? 0,
+                stateId: stateId ?? '',
                 marca: marca ?? '',
                 precioTm: precioTm ?? 0,
                 pesoKg: pesoKg ?? 0,
@@ -123,10 +128,13 @@ export const UpdateProduct = async (value: IUpdate) => {
     }
 }
 
-export const getProduct = async () => {
+export const getProduct = async (id: string) => {
     try {
 
         const products = await prisma.product.findMany({
+            where: {
+                userId: id
+            },
             select: {
                 id: true,
                 categoryId: true,
@@ -177,7 +185,7 @@ export const getProduct = async () => {
     }
 }
 
-export const getProductById = async (id: number) => {
+export const getProductById = async (id: string) => {
     try {
         const response = await prisma.product.findFirst({
             where: {
@@ -198,7 +206,7 @@ export const getProductById = async (id: number) => {
     }
 }
 
-export const deleteProduc = async (id: number) => {
+export const deleteProduc = async (id: string) => {
     try {
 
         const response = await prisma.product.delete({

@@ -8,7 +8,7 @@ export default async function EditProduct({ params }: { params: { id: string } }
 
     const { id } = params;
 
-    const { data } = await getProductById(Number(id));
+    const { data } = await getProductById(id);
 
     const category = await getCategory();
     const state = await getState();

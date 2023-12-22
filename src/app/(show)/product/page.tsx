@@ -5,12 +5,15 @@ import { Button } from '@/components/ui/button'
 import { paths } from '@/config/paths'
 import { getProduct } from '@/actions'
 import TableProduct from './ui/TableProduct'
+import { auth } from '@/auth.config'
 
 export default async function ProductPage() {
 
-    const { data } = await getProduct();
+    const session = await auth();
 
-     
+    const { data } = await getProduct(session?.user?.id ?? '');
+
+
     return (
         <div className="container">
             <CustomBreadcrumbs
@@ -29,7 +32,7 @@ export default async function ProductPage() {
                 }
                 className='mb-3 md:mb-5'
             />
-            <TableProduct data={data}/>
+            <TableProduct data={data} />
         </div>
     )
 }

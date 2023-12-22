@@ -55,13 +55,13 @@ interface Props {
     category: Category[];
     state: State[];
     currentProduct?: {
-        id: number;
-        categoryId: number;
+        id: string;
+        categoryId: string;
         cantidad: number;
         descripcionEn: string;
         descripcionEs: string;
         origen: string;
-        stateId: number;
+        stateId: string;
         marca: string;
         precioTm: number;
         pesoKg: number;
@@ -71,12 +71,12 @@ interface Props {
 }
 
 interface Category {
-    id: number;
+    id: string;
     nombre: string;
 }
 
 interface State {
-    id: number;
+    id: string;
     codigo: string;
 }
 

@@ -40,13 +40,13 @@ export interface Props {
 export type Payment = {
     category: string | null;
     state: string | null;
-    id: number;
-    categoryId: number;
+    id: string;
+    categoryId: string;
     cantidad: number;
     descripcionEn: string;
     descripcionEs: string;
     origen: string;
-    stateId: number;
+    stateId: string;
     marca: string;
     precioTm: number;
     pesoKg: number;
@@ -58,7 +58,7 @@ const ActionsCell = ({ row }: any) => {
     const { value, onToggle } = useBoolean(false);
     const payment = row.original;
   
-    const handleEliminar = async (id: number) => {
+    const handleEliminar = async (id: string) => {
       const { ok } = await deleteProduc(id);
       if (ok) {
         onToggle();
@@ -154,66 +154,7 @@ export const columns: ColumnDef<Payment>[] = [
     {
         id: "actions",
         enableHiding: false,
-        cell: ActionsCell /*({ row }) => {
-
- 
-            const {value,onToggle} = useBoolean(false);
-
-            const payment = row.original;
-
-
-            const handleEliminar = async (id: number) => {
-                const { ok } = await deleteProduc(id);
-                if (ok) {
-                    onToggle()
-                }
-            }
-
-
-
-            const renderAlerta = (
-                <AlertDialog open={value}>
-                    <AlertDialogContent>
-                        <AlertDialogHeader>
-                            <AlertDialogTitle>Eliminar Registro?</AlertDialogTitle>
-                            <AlertDialogDescription>
-                                {`Esta seguro de elminar ${payment.descripcionEs}`}
-                            </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                            <AlertDialogCancel onClick={() => onToggle()}>Cancelar</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => handleEliminar(payment.id)}>Continuar</AlertDialogAction>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                </AlertDialog>
-            );
-
-              return (
-                <>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                                <span className="sr-only">Open menu</span>
-                                <DotsHorizontalIcon className="h-4 w-4" />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuItem asChild>
-                                <Link href={paths.show.product.edit(payment.id.toString())}>Editar</Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                                onClick={() => onToggle()}
-                            >
-                                Elminar
-                            </DropdownMenuItem>
-
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                    {renderAlerta}
-                </>
-            )
-        },*/
+        cell: ActionsCell
     },
 ]
 
